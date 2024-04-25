@@ -24,11 +24,11 @@ def my_view_home(request):
 
 
 def my_view_sobre(request):
-    return HttpResponse('Visualização Sobre')
+    return HttpResponse('Visualização Sobre!')
 
 
 def my_view_contato(request):
-    return HttpResponse('Visualização Contato')
+    return HttpResponse('Visualização Contato!')
 
 
 urlpatterns = [

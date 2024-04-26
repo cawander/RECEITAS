@@ -20,5 +20,4 @@ def view_sobre(request):
 
 
 def view_contato(request):
-    # return HttpResponse('Contato')
-    return render(request, 'me-apague/temp.html')
+    return render(request, template_name='recipes/contato.html')

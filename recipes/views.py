@@ -1,15 +1,25 @@
 from django.shortcuts import render
 
 from utils.recipes.factory import make_recipe
+from .models import Recipe
 
 
 def home(request):
-    # return render(request, 'global/home.html')
+    recipes = Recipe.objects.filter(is_published=True).order_by('-id')
     return render(request, template_name='recipes/pages/home.html',
-                  context={
-                      'recipes': [make_recipe() for _ in range(10)],
-                  }, status=201
-                  )
+                  context={'recipes': recipes})
+    # return render(request, template_name='recipes/pages/home.html',
+    #              context={
+    #                 'recipes': [make_recipe() for _ in range(10)],
+    #             }, status=201
+    #             )
+
+
+def category(request, category_id):
+    recipes = Recipe.objects.filter(
+        category__id=category_id, is_published=True).order_by('-id')
+    return render(request, template_name='recipes/pages/category.html',
+                  context={'recipes': recipes})
 
 
 def recipe(request, id):

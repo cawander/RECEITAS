@@ -6,16 +6,19 @@ from parameterized import parameterized
 
 class RecipeModelTest(RecipeTestBase):
     def setUp(self) -> None:
+        self.counter = 1
         self.recipe = self.make_recipe()
         return super().setUp()
 
     def make_recipe_no_defaults(self):
+        unique_slug = f'recipe-{self.counter}'
+        self.counter += 1
         recipe = Recipe(
             category=self.make_category(name='Test Default Category'),
             author=self.make_author(username='newuser'),
             title='Recipe Title',
             description='Recipe Description',
-            slug='recipe-slug',
+            slug=unique_slug,
             preparation_time=10,
             preparation_time_unit='Minutos',
             servings=5,

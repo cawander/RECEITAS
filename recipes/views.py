@@ -3,6 +3,12 @@ from django.http import Http404
 from django.db.models import Q
 # from utils.recipes.factory import make_recipe
 from .models import Recipe
+from utils.recipes.pagination import make_pagination
+
+import os
+
+PER_PAGE = int(os.environ.get('PER_PAGE', 6))
+QTY_PAGES = int(os.environ.get('QTY_PAGES', 8))
 
 
 def home(request):
@@ -10,8 +16,14 @@ def home(request):
         is_published=True
     ).order_by('-id')
 
-    return render(request, template_name='recipes/pages/home.html',
-                  context={'recipes': recipes})
+    page_obj, pagination_range = make_pagination(
+        request, recipes, PER_PAGE, QTY_PAGES)
+
+    return render(
+        request,
+        template_name='recipes/pages/home.html',
+        context={'recipes': page_obj, 'pagination_range': pagination_range}
+    )
 
 
 def category(request, category_id):
@@ -22,9 +34,13 @@ def category(request, category_id):
         ).order_by('-id')
     )
 
+    page_obj, pagination_range = make_pagination(
+        request, recipes, PER_PAGE, QTY_PAGES)
+
     return render(request, template_name='recipes/pages/category.html',
                   context={
-                      'recipes': recipes,
+                      'recipes': page_obj,
+                      'pagination_range': pagination_range,
                       'title': f'{recipes[0].category.name} - Category | ',
                   }
                   )
@@ -57,12 +73,17 @@ def search(request):
         is_published=True,
     ).order_by('-id')
 
+    page_obj, pagination_range = make_pagination(
+        request, recipes, PER_PAGE, QTY_PAGES)
+
     return render(
         request,
         template_name='recipes/pages/search.html',
         context={
             'page_title': f'Search for  "{search_term}"',
             'search_term': search_term,
-            'recipes': recipes,
-        },
+            'recipes': page_obj,
+            'pagination_range': pagination_range,
+            'additional_url_query': f'&q={search_term}'
+        }
     )

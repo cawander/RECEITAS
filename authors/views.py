@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.http import Http404
 from .forms import RegisterForm
+from django.urls import reverse
 
 
 def register_view(request):
@@ -9,8 +10,10 @@ def register_view(request):
     form = RegisterForm(register_form_data)
     return render(
         request,
-        'authors/pages/register_view.html',
-        {'form': form, }
+        'authors/pages/register_view.html', {
+            'form': form,
+            'form_action': reverse('authors:create'),
+        }
     )
 
 

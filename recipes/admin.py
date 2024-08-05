@@ -20,5 +20,7 @@ class RecipeAdmin(admin.ModelAdmin):
         "slug": ('title',)
     }
 
+    autocomplete_fields = 'tags',
+
 
 admin.site.register(Category, CategoryAdmin)

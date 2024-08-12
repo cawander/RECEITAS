@@ -1,24 +1,21 @@
-
-from .test_recipe_base import RecipeTestBase, Recipe
 from django.core.exceptions import ValidationError
 from parameterized import parameterized
+
+from .test_recipe_base import Recipe, RecipeTestBase
 
 
 class RecipeModelTest(RecipeTestBase):
     def setUp(self) -> None:
-        self.counter = 1
         self.recipe = self.make_recipe()
         return super().setUp()
 
     def make_recipe_no_defaults(self):
-        unique_slug = f'recipe-{self.counter}'
-        self.counter += 1
         recipe = Recipe(
             category=self.make_category(name='Test Default Category'),
             author=self.make_author(username='newuser'),
-            title='Recipe Title',
+            title='Recipe Title 1',
             description='Recipe Description',
-            slug=unique_slug,
+            slug='recipe-slug-for-no-defaults',
             preparation_time=10,
             preparation_time_unit='Minutos',
             servings=5,
@@ -44,7 +41,7 @@ class RecipeModelTest(RecipeTestBase):
         recipe = self.make_recipe_no_defaults()
         self.assertFalse(
             recipe.preparation_steps_is_html,
-            msg='Recipe preparation_step_is_html is not False',
+            msg='Recipe preparation_steps_is_html is not False',
         )
 
     def test_recipe_is_published_is_false_by_default(self):
@@ -60,7 +57,7 @@ class RecipeModelTest(RecipeTestBase):
         self.recipe.full_clean()
         self.recipe.save()
         self.assertEqual(
-            str(self.recipe), 'Testing Representation',
+            str(self.recipe), needed,
             msg=f'Recipe string representation must be '
-                f'"{needed}", but "{self.recipe}" was received.',
+                f'"{needed}" but "{str(self.recipe)}" was received.'
         )

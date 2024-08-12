@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.utils import translation
 from django.utils.translation import gettext as _
 # from utils.recipes.factory import make_recipe
-from .models import Recipe
+from recipes.models import Recipe
 from utils.recipes.pagination import make_pagination
 from tag.models import Tag
 

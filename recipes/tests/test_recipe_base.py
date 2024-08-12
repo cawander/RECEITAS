@@ -39,8 +39,10 @@ class RecipeMixin:
     ):
         if category_data is None:
             category_data = {}
+
         if author_data is None:
             author_data = {}
+
         return Recipe.objects.create(
             category=self.make_category(**category_data),
             author=self.make_author(**author_data),
